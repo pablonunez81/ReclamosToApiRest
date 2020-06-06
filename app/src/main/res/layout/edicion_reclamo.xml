@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/t_telefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefono" />
+
+        <EditText
+            android:id="@+id/telefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/t_telefono"
+            android:hint="numero telefonico"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/t_nombreCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/telefono"
+            android:text="Nombre del Cliente" />
+
+        <EditText
+            android:id="@+id/nombreCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/t_nombreCliente"
+            android:ems="10"
+            android:hint="Nombre del Cliente"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/t_tipoReclamo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nombreCliente"
+            android:text="Tipo de Reclamo" />
+
+        <Spinner
+            android:id="@+id/tipoReclamo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/t_tipoReclamo"
+            android:layout_toRightOf="@id/t_tipoReclamo" />
+
+        <TextView
+            android:id="@+id/t_tipoAveria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/t_tipoReclamo"
+            android:text="Tipo de Averia" />
+
+        <Spinner
+            android:id="@+id/tipoAveria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/t_tipoAveria"
+            android:layout_toRightOf="@id/t_tipoAveria" />
+
+        <TextView
+            android:id="@+id/t_direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/t_tipoAveria"
+            android:text="Dirección" />
+
+        <EditText
+            android:id="@+id/direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/t_direccion"
+            android:ems="10"
+            android:hint="dirección"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/t_referencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/direccion"
+            android:text="Referencias" />
+
+        <EditText
+            android:id="@+id/referencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/t_referencia"
+            android:ems="10"
+            android:hint="referencia"
+            android:inputType="textPersonName" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

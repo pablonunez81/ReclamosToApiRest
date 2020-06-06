@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Reclamos</string>
+    <string name="title_activity_main">Reclamos</string>
+    <string name="action_settings">Preferencias</string>
+    <string name="accion_mostrar">Mostrar Lugares</string>
+    <string name="accion_preferencias">Preferencias</string>
+    <string name="accion_acerca_de">Acerca de la App</string>
+    <string name="accion_salir">Salir</string>
+    <string name="accion_buscar">Buscar</string>
+    <string name="accion_cancelar">Cancelar</string>
+    <string name="accion_guardar">Guardar</string>
+    <string name="accion_buscar_por_movil">Ver reclamos asignados al móvil</string>
+</resources>

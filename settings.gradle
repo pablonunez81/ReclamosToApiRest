@@ -1,0 +1,3 @@
+rootProject.name='Reclamos'
+include ':app'
+include ':lib'
