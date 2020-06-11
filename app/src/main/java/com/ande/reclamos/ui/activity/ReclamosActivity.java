@@ -1,4 +1,4 @@
-package com.ande.reclamos;
+package com.ande.reclamos.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,16 +26,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ande.reclamos.AcercaDeActivity;
+import com.ande.reclamos.EdicionReclamoActivity;
+import com.ande.reclamos.MapaActivity;
+import com.ande.reclamos.R;
+import com.ande.reclamos.Reclamos;
+import com.ande.reclamos.ReclamosBD;
+import com.ande.reclamos.VistaReclamoActivity;
 import com.ande.reclamos.io.MyApiAdapter;
 import com.ande.reclamos.model.Movil;
+import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.adapter.AdaptadorReclamosBD;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReclamosActivity extends AppCompatActivity implements LocationListener, Callback<Movil> {
+public class ReclamosActivity extends AppCompatActivity implements LocationListener, Callback {
 
     private Button bAcercaDe;
     private Button bSalir;
@@ -75,25 +86,8 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
         movilNumero = extras.getString("movil_numero", null);
         //Crea la base de datos, tabla e inserta valores definidos
         reclamos = new ReclamosBD(this);
-
-        //boton Acerca De
-        /*bAcercaDe = findViewById(R.id.b_acercaDe);
-        bAcercaDe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lanzarAcercaDe(null);
-            }
-        });*/
-
-        //Boton salir
-        /*bSalir = findViewById(R.id.b_salir);
-        bSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
-
+        //Trae los reclamos filtrados por movil logeado
+        fetchReclamosMovil();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -107,8 +101,6 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
              */
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
                 long _id = reclamos.nuevo();
                 Intent i = new Intent(ReclamosActivity.this, EdicionReclamoActivity.class);
                 i.putExtra("_id", _id);
@@ -119,8 +111,6 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
         //Buscamos recycler por su identificador
         recyclerView = findViewById(R.id.recycler_view);
         //Creamos un adaptador
-        //adaptador = new AdaptadorReclamos(this, reclamos);
-
         /**
          * rellena con el resultado de la consulta: SELECT * From reclamos
          */
@@ -148,6 +138,8 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
         manejador = (LocationManager) getSystemService(LOCATION_SERVICE);
         ultimaLocalizacion();
     }
+
+
 
     /**
      * Antes de obtener una localizacion, hay que verificar que tenemos permiso para hacerlo.
@@ -193,8 +185,8 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
             Reclamos.posicionActual.setLatitud(localiz.getLatitude());
             Reclamos.posicionActual.setLongitud(localiz.getLongitude());
 
-            Call<Movil> call = MyApiAdapter.getApiService().actualizarUbicacion(String.valueOf(movilId), String.valueOf(movilNumero), String.valueOf(localiz.getLatitude()), String.valueOf(localiz.getLongitude()));
-            call.enqueue(this);
+            /*Call<Movil> call = MyApiAdapter.getApiService().actualizarUbicacion(String.valueOf(movilId), String.valueOf(movilNumero), String.valueOf(localiz.getLatitude()), String.valueOf(localiz.getLongitude()));
+            call.enqueue(this);*/
         }
     }
 
@@ -413,7 +405,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     }
 //-----------------Retrofit----
     @Override
-    public void onResponse(Call<Movil> call, Response<Movil> response) {
+    public void onResponse(Call call, Response response) {
         if(response.isSuccessful()) {
             final Movil movil = (Movil) response.body();
             Log.d("onResponse MejorLocaliz", "numero de movil  => " + movil.getNumero());
@@ -424,8 +416,34 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     }
 
     @Override
-    public void onFailure(Call<Movil> call, Throwable t) {
+    public void onFailure(Call call, Throwable t) {
         Toast.makeText(this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
 //-----------------Fin de Retrofit----
+
+    private void fetchReclamosMovil() {
+        Call<List<Reclamo>> call = MyApiAdapter.getApiService().reclamosMovil(String.valueOf(movilId));
+        call.enqueue(new ReclamosCallback());
+
+    }
+
+
+    private class ReclamosCallback implements Callback<List<Reclamo>> {
+        @Override
+        public void onResponse(Call<List<Reclamo>> call, Response<List<Reclamo>> response) {
+            if(response.isSuccessful()) {
+                List<Reclamo> dataArrayList = new ArrayList<>();
+                dataArrayList = response.body();
+
+                //Toast.makeText(getBaseContext(), "Lista de reclamos recibidos. Cantidad: "+ dataArrayList.size() + ", NombreCliente: " + dataArrayList.get(0).getNombre() + ", Fecha: " + dataArrayList.get(0).getFecha_comunicacion() , Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getBaseContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<List<Reclamo>> call, Throwable t) {
+            Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

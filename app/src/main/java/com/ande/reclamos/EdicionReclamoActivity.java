@@ -9,6 +9,8 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ande.reclamos.ui.activity.ReclamosActivity;
+
 /**
  * Actividad de edición de un reclamo.
  * Campos que pueden ser modificados en la vistaReclamo, no deberían poder ser modificados aquí

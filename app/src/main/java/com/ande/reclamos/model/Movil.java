@@ -4,12 +4,24 @@ package com.ande.reclamos.model;
 //    coordx = models.IntegerField(null=True, blank=True)
 //    coordy = models.IntegerField(null=True, blank=True)
 
+import com.google.gson.annotations.SerializedName;
+
 public class Movil {
 
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("numero")
     private String numero;
+
+    @SerializedName("coordx")
     private Float coordx;
+
+    @SerializedName("coordy")
     private Float coordy;
+
+    @SerializedName("visible")
+    private boolean visible;
 
     public int getId() {
         return id;
@@ -41,5 +53,13 @@ public class Movil {
 
     public void setCoordy(Float coordy) {
         this.coordy = coordy;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

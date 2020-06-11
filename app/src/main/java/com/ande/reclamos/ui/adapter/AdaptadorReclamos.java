@@ -16,7 +16,7 @@ import com.ande.reclamos.Reclamos;
 
 /**
  * Un adaptador es un mecanismo estandar que permite crear vistas que
- * seran han de ser mostradas dentro de un contenedor.
+ * han de ser mostradas dentro de un contenedor.
  * Se utilizará una clase RecyclerView.Adapter
  */
 public class AdaptadorReclamos extends RecyclerView.Adapter<AdaptadorReclamos.ViewHolder> {
@@ -87,6 +87,7 @@ public class AdaptadorReclamos extends RecyclerView.Adapter<AdaptadorReclamos.Vi
      * Usando como base el ViewHolder, lo personalizamos según su posición.
      * Luego de personalizarlo, el SISTEMA se encarga de crear la vista definitiva que será
      * insertada en el recyclerView.
+     * Este onBindViewHolder es reemplazado en la clase AdaptadorReclamosBD
      * @param holder
      * @param posicion
      */

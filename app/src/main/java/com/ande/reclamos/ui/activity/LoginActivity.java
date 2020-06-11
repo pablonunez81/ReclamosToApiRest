@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ande.reclamos.R;
-import com.ande.reclamos.ReclamosActivity;
 import com.ande.reclamos.io.MyApiAdapter;
 import com.ande.reclamos.model.Movil;
 

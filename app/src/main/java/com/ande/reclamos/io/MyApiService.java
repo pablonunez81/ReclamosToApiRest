@@ -1,12 +1,14 @@
 package com.ande.reclamos.io;
 
 import com.ande.reclamos.model.Movil;
+import com.ande.reclamos.model.Reclamo;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -22,4 +24,7 @@ public interface MyApiService {
             @Field("numero") String movilNumero,
             @Field("coordx") String coordx,
             @Field("coordy") String coordy);
+
+    @GET("reclamos_movil/{numero_movil}/")
+    Call<List<Reclamo>> reclamosMovil(@Path("numero_movil") String numero);
 }

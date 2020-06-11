@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ande.reclamos.ui.activity.ReclamosActivity;
+
 /**
  * Actividad que visualiza un reclamo
  */

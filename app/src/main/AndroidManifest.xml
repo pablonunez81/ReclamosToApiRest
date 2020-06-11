@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ReclamosActivity"
+            android:name=".ui.activity.ReclamosActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
 

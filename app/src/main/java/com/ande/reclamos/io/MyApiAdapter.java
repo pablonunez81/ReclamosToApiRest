@@ -18,7 +18,7 @@ public class MyApiAdapter {
         httpClient.addInterceptor(logging);
 
         String baseUrl = "http://192.168.0.100:8000/rest/";
-        //String baseUrl = "http://10.60.14.52:8000/rest/";
+        //String baseUrl = "http://10.60.14.71:8000/rest/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()
