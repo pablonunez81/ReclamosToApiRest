@@ -3,6 +3,7 @@ package com.ande.reclamos.io;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,5 +27,5 @@ public interface MyApiService {
             @Field("coordy") String coordy);
 
     @GET("reclamos_movil/{numero_movil}/")
-    Call<List<Reclamo>> reclamosMovil(@Path("numero_movil") String numero);
+    Call<ArrayList<Reclamo>> reclamosMovil(@Path("numero_movil") String numero);
 }

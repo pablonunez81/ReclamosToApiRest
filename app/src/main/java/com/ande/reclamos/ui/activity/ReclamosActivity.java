@@ -37,6 +37,7 @@ import com.ande.reclamos.io.MyApiAdapter;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.adapter.AdaptadorReclamosBD;
+import com.ande.reclamos.ui.adapter.ReclamosAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
      * lo hago Static para poder acceder desde otras clases.
      * Se crea el cursor, que es el resultado de la consulta a la base de datos.
      */
-    public static AdaptadorReclamosBD adaptador;
+    //public static AdaptadorReclamosBD adaptador;
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -70,6 +71,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     private static final long DOS_MINUTOS = 2 * 60 * 1000;
     private static int movilId = -1;
     private static String movilNumero = null;
+    private ReclamosAdapter mAdapter;
 
     /**
      * El objeto reclamos será accedido desde cualquier clase,
@@ -86,6 +88,16 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
         movilNumero = extras.getString("movil_numero", null);
         //Crea la base de datos, tabla e inserta valores definidos
         reclamos = new ReclamosBD(this);
+
+        //Buscamos recycler por su identificador
+        recyclerView = findViewById(R.id.recycler_view);
+
+        //Creamos un nuevo layoutManager del tipo LinearLayoutManager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new ReclamosAdapter(this);
+        recyclerView.setAdapter(mAdapter);
         //Trae los reclamos filtrados por movil logeado
         fetchReclamosMovil();
 
@@ -108,32 +120,19 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
             }
         });
 
-        //Buscamos recycler por su identificador
-        recyclerView = findViewById(R.id.recycler_view);
-        //Creamos un adaptador
-        /**
-         * rellena con el resultado de la consulta: SELECT * From reclamos
-         */
-        adaptador = new AdaptadorReclamosBD(this, reclamos, reclamos.extraeCursor());
-        //lo asignamos al recyclerView
-        recyclerView.setAdapter(adaptador);
-        //Creamos un nuevo layoutManager del tipo LinearLayoutManager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
         /**
          * Se añade un escuchador para poder selecionar objetos de la lista de RecyclerView.
          * el metodo getChildAdapterPosition nos indicará la posición
          * de una vista dentro del adaptador.
          */
-        adaptador.setOnItemClickListener(new View.OnClickListener() {
+        /*adaptador.setOnItemClickListener(new View.OnClickListener() {                 //TODO. Esto debo agregar nuevamente
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ReclamosActivity.this, VistaReclamoActivity.class);
                 i.putExtra("id", (long) recyclerView.getChildAdapterPosition(v));
                 startActivity(i);
             }
-        });
+        });*/
         
         manejador = (LocationManager) getSystemService(LOCATION_SERVICE);
         ultimaLocalizacion();
@@ -238,7 +237,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
                 // y activar los proveedores.
                 ultimaLocalizacion();;
                 activarProveedores();
-                adaptador.notifyDataSetChanged();
+                //adaptador.notifyDataSetChanged();                                             //TODO. Esto debo agregar nuevamente
                 //Refrescamos el adaptador del RecyclerView para que se muestren las distancias
                 //SelectorFragment.adaptador.notifyDataSetChanged();
             }
@@ -368,7 +367,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     public void onLocationChanged(Location location) {
         Log.d(Reclamos.TAG, "Nueva Localización: " + location );
         actualizaMejorLocaliz(location);
-        adaptador.notifyDataSetChanged();
+        //adaptador.notifyDataSetChanged();                             //TODO. Esto debo agregar nuevamente
     }
 
     /**
@@ -422,19 +421,20 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
 //-----------------Fin de Retrofit----
 
     private void fetchReclamosMovil() {
-        Call<List<Reclamo>> call = MyApiAdapter.getApiService().reclamosMovil(String.valueOf(movilId));
+        Call<ArrayList<Reclamo>> call = MyApiAdapter.getApiService().reclamosMovil(String.valueOf(movilId));
         call.enqueue(new ReclamosCallback());
 
     }
 
 
-    private class ReclamosCallback implements Callback<List<Reclamo>> {
+    private class ReclamosCallback implements Callback<ArrayList<Reclamo>> {
         @Override
-        public void onResponse(Call<List<Reclamo>> call, Response<List<Reclamo>> response) {
+        public void onResponse(Call<ArrayList<Reclamo>> call, Response<ArrayList<Reclamo>> response) {
             if(response.isSuccessful()) {
                 List<Reclamo> dataArrayList = new ArrayList<>();
-                dataArrayList = response.body();
-
+                ArrayList<Reclamo> reclamos = response.body();
+                mAdapter.setDataSet(reclamos);
+                populateReclamosMovil(dataArrayList);
                 //Toast.makeText(getBaseContext(), "Lista de reclamos recibidos. Cantidad: "+ dataArrayList.size() + ", NombreCliente: " + dataArrayList.get(0).getNombre() + ", Fecha: " + dataArrayList.get(0).getFecha_comunicacion() , Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(getBaseContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
@@ -442,8 +442,15 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
         }
 
         @Override
-        public void onFailure(Call<List<Reclamo>> call, Throwable t) {
+        public void onFailure(Call<ArrayList<Reclamo>> call, Throwable t) {
             Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Enviar los datos al adaptador
+     * @param dataArrayList
+     */
+    private void populateReclamosMovil(List<Reclamo> dataArrayList) {
     }
 }

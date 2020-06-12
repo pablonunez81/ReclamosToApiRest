@@ -57,17 +57,17 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         // TODO: si el primer reclamo no tiene posición, ver como resolverlo
         /*if (MainActivity.reclamos.tamanyo() > 0 ) {
             GeoPunto p = MainActivity.reclamos.elemento(0).getPosicion();*/
-        if (ReclamosActivity.adaptador.getItemCount() > 0 ) {
+        /*if (ReclamosActivity.adaptador.getItemCount() > 0 ) {                         //TODO. Esto debo agregar nuevamente
             GeoPunto p = ReclamosActivity.adaptador.reclamoPosicion(0).getPosicion();
 
             mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(p.getLatitud(), p.getLongitud()), 12
             ));
-        }
+        }*/
 
         /*for (int n=0; n<MainActivity.reclamos.tamanyo(); n++){
             Reclamo reclamo = MainActivity.reclamos.elemento(n);*/
-        for (int n = 0; n< ReclamosActivity.adaptador.getItemCount(); n++){
+        /*for (int n = 0; n< ReclamosActivity.adaptador.getItemCount(); n++){               //TODO. Esto debo agregar nuevamente
             Reclamo reclamo = ReclamosActivity.adaptador.reclamoPosicion(n);
             GeoPunto p = reclamo.getPosicion();
 
@@ -85,7 +85,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                         .icon(BitmapDescriptorFactory.fromBitmap(icono))
                 );
             }
-        }
+        }*/
 
         mapa.setOnInfoWindowClickListener(this);
 
@@ -105,7 +105,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onInfoWindowClick(Marker marker) {
 
-        for (int id = 0; id< ReclamosActivity.adaptador.getItemCount(); id++){
+        /*for (int id = 0; id< ReclamosActivity.adaptador.getItemCount(); id++){                    //TODO. Esto debo agregar nuevamente
 
             if (ReclamosActivity.adaptador.reclamoPosicion(id). getNombreCliente()
                     .equals(marker.getTitle())){
@@ -114,6 +114,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
                 break;
             }
-        }
+        }*/
     }
 }

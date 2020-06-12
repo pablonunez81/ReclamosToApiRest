@@ -81,8 +81,8 @@ public class VistaReclamoActivity extends AppCompatActivity {
                 return true;
             case R.id.accion_borrar:
                 //Busca el id del reclamo según su posición en el cursor
-                int _id = ReclamosActivity.adaptador.idPosicion((int) id);
-                borrarReclamo((int) _id);
+                /*int _id = ReclamosActivity.adaptador.idPosicion((int) id);                        //TODO. Esto debo agregar nuevamente
+                borrarReclamo((int) _id);*/
                 //MainActivity.reclamos.borrar((int) id);
                 //finish();
                 return true;
@@ -126,7 +126,7 @@ public class VistaReclamoActivity extends AppCompatActivity {
     public void borrarReclamo(final int id){
         //MainActivity.reclamos.borrar((int) id);
 
-        new AlertDialog.Builder(this)
+        /*new AlertDialog.Builder(this)                                                             //TODO. Esto debo agregar nuevamente
                 .setTitle("Borrado de un reclamo")
                 .setMessage("¿Estas seguro que quieres eliminar este reclamo?")
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
@@ -142,7 +142,7 @@ public class VistaReclamoActivity extends AppCompatActivity {
                     }
                 })
                 .setNegativeButton("Cancelar", null)
-                .show();
+                .show();*/
     }
 
     /**
@@ -170,7 +170,7 @@ public class VistaReclamoActivity extends AppCompatActivity {
         /**
          * Ahora se accede al cursor que tiene la copia de la consulta SQL
          */
-        reclamo = ReclamosActivity.adaptador.reclamoPosicion((int) id);
+        /*reclamo = ReclamosActivity.adaptador.reclamoPosicion((int) id);                           //TODO. Esto debo agregar nuevamente
 
         TextView nombreCliente = (TextView) findViewById(R.id.nombreCliente);
         nombreCliente.setText(reclamo.getNombreCliente());
@@ -195,7 +195,7 @@ public class VistaReclamoActivity extends AppCompatActivity {
         direccion.setText(reclamo.getDireccion());
 
         TextView referencia = (TextView) findViewById(R.id.referencia);
-        referencia.setText(reclamo.getReferencia());
+        referencia.setText(reclamo.getReferencia());*/
     }
 
     /**

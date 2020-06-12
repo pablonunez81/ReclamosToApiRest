@@ -48,7 +48,7 @@ public class EdicionReclamoActivity extends AppCompatActivity {
             /**
              * Ahora se accede al cursor que tiene la copia de la consulta SQL
              */
-            reclamo = ReclamosActivity.adaptador.reclamoPosicion((int) id);
+            //reclamo = ReclamosActivity.adaptador.reclamoPosicion((int) id);                   //TODO. Esto debo agregar nuevamente
         }
         nombreCliente = (EditText) findViewById(R.id.nombreCliente);
         nombreCliente.setText(reclamo.getNombreCliente());
@@ -123,14 +123,14 @@ public class EdicionReclamoActivity extends AppCompatActivity {
         reclamo.setReferencia(referencia.getText().toString());
         //MainActivity.reclamos.actualiza((int) id, reclamo);
         if (_id == -1) {                //Edicion
-            _id = ReclamosActivity.adaptador.idPosicion((int) id);
+            //_id = ReclamosActivity.adaptador.idPosicion((int) id);                //TODO. Esto debo agregar nuevamente
         }
         ReclamosActivity.reclamos.actualiza((int) _id, reclamo);
-        ReclamosActivity.adaptador.setCursor(ReclamosActivity.reclamos.extraeCursor());
+        //ReclamosActivity.adaptador.setCursor(ReclamosActivity.reclamos.extraeCursor());           //TODO. Esto debo agregar nuevamente
         if(id != -1){                  //Edicion
-            ReclamosActivity.adaptador.notifyItemChanged((int) id);
+            //ReclamosActivity.adaptador.notifyItemChanged((int) id);                               //TODO. Esto debo agregar nuevamente
         }else {                         //Nuevo
-            ReclamosActivity.adaptador.notifyDataSetChanged();
+            //ReclamosActivity.adaptador.notifyDataSetChanged();                                    //TODO. Esto debo agregar nuevamente
         }
         finish();
     }
