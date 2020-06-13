@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MyApiAdapter {
 
     private static MyApiService API_SERVICE;
+    private static String baseUrl, imageTipoReclamoUrl, apiRestUrl;
 
     public static MyApiService getApiService() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -17,12 +18,14 @@ public class MyApiAdapter {
         // add logging interceptor
         httpClient.addInterceptor(logging);
 
-        String baseUrl = "http://192.168.0.100:8000/rest/";
-        //String baseUrl = "http://10.60.14.71:8000/rest/";
+        baseUrl = "http://192.168.0.100";
+        //baseUrl = "http://10.60.14.71";
+        apiRestUrl = baseUrl + ":8000/rest/";
+        imageTipoReclamoUrl = baseUrl + "/images/tipo_reclamo/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
+                    .baseUrl(apiRestUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build()) // <-- using the log level
                     .build();
@@ -32,4 +35,19 @@ public class MyApiAdapter {
         return API_SERVICE;
     }
 
+    public static String getBaseUrl() {
+        return baseUrl;
+    }
+
+    /**
+     * Método que permite acceder a la Url de imagenes del tipo reclamos
+     * @return
+     */
+    public static String getImageTipoReclamoUrl() {
+        return imageTipoReclamoUrl;
+    }
+
+    public static String getApiRestUrl() {
+        return apiRestUrl;
+    }
 }

@@ -1,8 +1,9 @@
 package com.ande.reclamos.model;
 
+import com.ande.reclamos.io.MyApiAdapter;
 import com.google.gson.annotations.SerializedName;
 
-class Tiporeclamo {
+public class Tiporeclamo {
 
     @SerializedName("id")
     private int id;
@@ -24,5 +25,15 @@ class Tiporeclamo {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    /**
+     * Método que permite acceder a una imagen que representa un tipo de reclamos.
+     * La obligación es de que en el servidor de imagen se guarde con el nombre igual al id del registro.
+     * Ejemplo: id=1, filename: 1.png
+     * @return
+     */
+    public String getImageTipoReclamoUrl(){
+        return MyApiAdapter.getImageTipoReclamoUrl()+this.id+".png";
     }
 }

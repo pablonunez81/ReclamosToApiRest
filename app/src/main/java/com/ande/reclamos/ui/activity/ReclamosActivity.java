@@ -36,13 +36,10 @@ import com.ande.reclamos.VistaReclamoActivity;
 import com.ande.reclamos.io.MyApiAdapter;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
-import com.ande.reclamos.ui.adapter.AdaptadorReclamosBD;
 import com.ande.reclamos.ui.adapter.ReclamosAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,20 +48,9 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
 
     private Button bAcercaDe;
     private Button bSalir;
-    //public static Reclamos reclamos = new ReclamosVector();
     public static ReclamosBD reclamos;
-
     private RecyclerView recyclerView;
-    //public AdaptadorReclamos adaptador;
-
-    /**
-     * lo hago Static para poder acceder desde otras clases.
-     * Se crea el cursor, que es el resultado de la consulta a la base de datos.
-     */
-    //public static AdaptadorReclamosBD adaptador;
-
     private RecyclerView.LayoutManager layoutManager;
-
     private LocationManager manejador;
     private Location mejorLocaliz;              //almacenará la mejor localización actual
     private static final int SOLICITUD_PERMISO_LOCALIZACION = 0;
@@ -184,8 +170,8 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
             Reclamos.posicionActual.setLatitud(localiz.getLatitude());
             Reclamos.posicionActual.setLongitud(localiz.getLongitude());
 
-            /*Call<Movil> call = MyApiAdapter.getApiService().actualizarUbicacion(String.valueOf(movilId), String.valueOf(movilNumero), String.valueOf(localiz.getLatitude()), String.valueOf(localiz.getLongitude()));
-            call.enqueue(this);*/
+            Call<Movil> call = MyApiAdapter.getApiService().actualizarUbicacion(String.valueOf(movilId), String.valueOf(movilNumero), String.valueOf(localiz.getLatitude()), String.valueOf(localiz.getLongitude()));
+            call.enqueue(this);
         }
     }
 
@@ -402,13 +388,13 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-//-----------------Retrofit----
+//-----------------Retrofit Mejor localización----
     @Override
     public void onResponse(Call call, Response response) {
         if(response.isSuccessful()) {
             final Movil movil = (Movil) response.body();
             Log.d("onResponse MejorLocaliz", "numero de movil  => " + movil.getNumero());
-            Toast.makeText(this, "Enviando ubicación", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Enviando ubicación", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Falla al enviar ubicación al servidor", Toast.LENGTH_SHORT).show();
         }
@@ -418,24 +404,18 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     public void onFailure(Call call, Throwable t) {
         Toast.makeText(this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
-//-----------------Fin de Retrofit----
+//-----------------Fin de Retrofit - Mejor localización----
 
     private void fetchReclamosMovil() {
         Call<ArrayList<Reclamo>> call = MyApiAdapter.getApiService().reclamosMovil(String.valueOf(movilId));
         call.enqueue(new ReclamosCallback());
-
     }
-
 
     private class ReclamosCallback implements Callback<ArrayList<Reclamo>> {
         @Override
         public void onResponse(Call<ArrayList<Reclamo>> call, Response<ArrayList<Reclamo>> response) {
             if(response.isSuccessful()) {
-                List<Reclamo> dataArrayList = new ArrayList<>();
-                ArrayList<Reclamo> reclamos = response.body();
-                mAdapter.setDataSet(reclamos);
-                populateReclamosMovil(dataArrayList);
-                //Toast.makeText(getBaseContext(), "Lista de reclamos recibidos. Cantidad: "+ dataArrayList.size() + ", NombreCliente: " + dataArrayList.get(0).getNombre() + ", Fecha: " + dataArrayList.get(0).getFecha_comunicacion() , Toast.LENGTH_SHORT).show();
+                populateReclamosMovil(response);
             }else {
                 Toast.makeText(getBaseContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
             }
@@ -449,8 +429,11 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
 
     /**
      * Enviar los datos al adaptador
-     * @param dataArrayList
+     * @param response<ArrayList<Reclamo>>
      */
-    private void populateReclamosMovil(List<Reclamo> dataArrayList) {
+    private void populateReclamosMovil(Response<ArrayList<Reclamo>> response) {
+        ArrayList<Reclamo> reclamos = response.body();
+        mAdapter.setDataSet(reclamos);
+        Log.d("PopulateReclamosMovil", "Cantidad de reclamos: "+reclamos.size());
     }
 }
