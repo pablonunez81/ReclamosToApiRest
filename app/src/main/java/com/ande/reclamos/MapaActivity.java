@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.activity.ReclamosActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +21,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
@@ -57,39 +62,64 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         // TODO: si el primer reclamo no tiene posición, ver como resolverlo
         /*if (MainActivity.reclamos.tamanyo() > 0 ) {
             GeoPunto p = MainActivity.reclamos.elemento(0).getPosicion();*/
-        /*if (ReclamosActivity.adaptador.getItemCount() > 0 ) {                         //TODO. Esto debo agregar nuevamente
-            GeoPunto p = ReclamosActivity.adaptador.reclamoPosicion(0).getPosicion();
-
+        /*if (ReclamosActivity.adaptador.getItemCount() > 0 ) {
+            GeoPunto p = ReclamosActivity.adaptador.reclamoPosicion(0).getPosicion();*/
+        if (ReclamosActivity.mAdapter.getItemCount() > 0 ) {
+            GeoPunto p = ReclamosActivity.mAdapter.reclamoPosicion(0).getPosicion();
             mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(p.getLatitud(), p.getLongitud()), 12
             ));
-        }*/
+        }
 
         /*for (int n=0; n<MainActivity.reclamos.tamanyo(); n++){
             Reclamo reclamo = MainActivity.reclamos.elemento(n);*/
-        /*for (int n = 0; n< ReclamosActivity.adaptador.getItemCount(); n++){               //TODO. Esto debo agregar nuevamente
-            Reclamo reclamo = ReclamosActivity.adaptador.reclamoPosicion(n);
-            GeoPunto p = reclamo.getPosicion();
+        for (int n = 0; n< ReclamosActivity.mAdapter.getItemCount(); n++){
+            final Reclamo reclamo = ReclamosActivity.mAdapter.reclamoPosicion(n);
+            final GeoPunto p = reclamo.getPosicion();
 
             if(p != null && p.getLatitud() != 0){
-                BitmapDrawable iconoDrawable = (BitmapDrawable) getResources().getDrawable(reclamo.getTipoReclamo().getRecurso());
+                //esto era para objetos drawable guardados como recursos en el telefono
+                /*BitmapDrawable iconoDrawable = (BitmapDrawable) getResources().getDrawable(reclamo.getTipoReclamo().getRecurso());
                 Bitmap iGrande = iconoDrawable.getBitmap();
                 Bitmap icono = Bitmap.createScaledBitmap(
                         iGrande,
                         iGrande.getWidth() / 7, iGrande.getHeight() / 7, false
                 );
-
                 mapa.addMarker(new MarkerOptions()
                         .position(new LatLng(p.getLatitud(), p.getLongitud()))
                         .title(reclamo.getNombreCliente()).snippet(reclamo.getDireccion())
                         .icon(BitmapDescriptorFactory.fromBitmap(icono))
-                );
+                );*/
+
+                //Traemos los iconos del server
+                Picasso.get().load(reclamo.getTiporeclamoid().getImageTipoReclamoUrl()).into(new Target() {
+                   @Override
+                   public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+                       Bitmap icono = Bitmap.createScaledBitmap(
+                               bitmap,
+                               bitmap.getWidth() / 7, bitmap.getHeight() / 7, false);
+                       Marker marker = mapa.addMarker(new MarkerOptions()
+                               .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                               .icon(BitmapDescriptorFactory.fromBitmap(icono))
+                               .title(reclamo.getNombre()).snippet(reclamo.getDireccion())
+                               .position(new LatLng(p.getLatitud(), p.getLongitud())));
+                   }
+
+                   @Override
+                   public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                   }
+
+                   /*@Override
+                   public void onBitmapFailed(Drawable drawable) {
+                   }*/
+
+                   @Override
+                   public void onPrepareLoad(Drawable drawable) {
+                   }
+                });
             }
-        }*/
-
+        }
         mapa.setOnInfoWindowClickListener(this);
-
-
     }
 
 

@@ -24,7 +24,15 @@ public class ReclamosAdapter extends RecyclerView.Adapter<ReclamosAdapter.ViewHo
         protected Context context;             //Necesario para el inflador
         protected View.OnClickListener onClickListener;
 
-        // Obtener referencias de los componentes visuales para cada elemento
+    public Reclamo reclamoPosicion(int i) {
+        if(!mDataSet.isEmpty()) {
+            return mDataSet.get(i);
+        }else{
+            return null;
+        }
+    }
+
+    // Obtener referencias de los componentes visuales para cada elemento
         // Es decir, referencias de los EditText, TextViews, Buttons
         public static class ViewHolder extends RecyclerView.ViewHolder {
             // en este ejemplo cada elemento consta solo de un título

@@ -1,6 +1,7 @@
 package com.ande.reclamos.model;
 
 
+import com.ande.reclamos.GeoPunto;
 import com.google.gson.annotations.SerializedName;
 
 import java.sql.Timestamp;
@@ -181,5 +182,16 @@ public class Reclamo {
 
     public void setPersonal(Personal personal) {
         this.personal = personal;
+    }
+
+    public GeoPunto getPosicion() {
+        if(this.getSuministroid() != null &&
+                !Double.isNaN(this.getSuministroid().getCoordx()) &&
+                !Double.isNaN(this.getSuministroid().getCoordy())) {
+            GeoPunto p = new GeoPunto(this.getSuministroid().getCoordx(), this.getSuministroid().getCoordy());
+            return p;
+        }else {
+            return null;
+        }
     }
 }

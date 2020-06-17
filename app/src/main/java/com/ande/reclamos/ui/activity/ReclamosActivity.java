@@ -57,7 +57,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     private static final long DOS_MINUTOS = 2 * 60 * 1000;
     private static int movilId = -1;
     private static String movilNumero = null;
-    private ReclamosAdapter mAdapter;
+    public static ReclamosAdapter mAdapter;
 
     /**
      * El objeto reclamos será accedido desde cualquier clase,
