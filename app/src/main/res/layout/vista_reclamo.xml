@@ -94,28 +94,52 @@
                 android:contentDescription="logo de direccion"
                 app:srcCompat="@android:drawable/ic_menu_directions" />
 
-            <TextView
-                android:id="@+id/direccion"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="bottom"
-                android:text="Dirección"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/direccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="Dirección"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                <TextView
+                    android:id="@+id/barrio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="Barrio"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/referencia"
+                android:id="@+id/lbl_nis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="10"
                 android:gravity="bottom"
-                android:text="Referencia"
+                android:text="NIS"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <TextView
+                android:id="@+id/nis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:text="Nis"
                 android:textAppearance="@android:style/TextAppearance.Medium" />
         </LinearLayout>
     </LinearLayout>

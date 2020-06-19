@@ -73,7 +73,7 @@ public class EdicionReclamoActivity extends AppCompatActivity {
         direccion = (EditText) findViewById(R.id.direccion);
         direccion.setText(reclamo.getDireccion());
 
-        referencia = (EditText) findViewById(R.id.referencia);
+        referencia = (EditText) findViewById(R.id.barrio);
         referencia.setText(reclamo.getReferencia());
     }
 

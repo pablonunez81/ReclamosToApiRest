@@ -89,7 +89,7 @@
             android:text="Referencias" />
 
         <EditText
-            android:id="@+id/referencia"
+            android:id="@+id/barrio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/t_referencia"

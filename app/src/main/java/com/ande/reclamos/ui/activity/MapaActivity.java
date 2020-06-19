@@ -1,4 +1,4 @@
-package com.ande.reclamos;
+package com.ande.reclamos.ui.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.ande.reclamos.GeoPunto;
+import com.ande.reclamos.R;
 import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.activity.ReclamosActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;

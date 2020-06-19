@@ -28,11 +28,9 @@ import android.widget.Toast;
 
 import com.ande.reclamos.AcercaDeActivity;
 import com.ande.reclamos.EdicionReclamoActivity;
-import com.ande.reclamos.MapaActivity;
 import com.ande.reclamos.R;
 import com.ande.reclamos.Reclamos;
 import com.ande.reclamos.ReclamosBD;
-import com.ande.reclamos.VistaReclamoActivity;
 import com.ande.reclamos.io.MyApiAdapter;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
@@ -111,14 +109,14 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
          * el metodo getChildAdapterPosition nos indicará la posición
          * de una vista dentro del adaptador.
          */
-        /*adaptador.setOnItemClickListener(new View.OnClickListener() {                 //TODO. Esto debo agregar nuevamente
+        mAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ReclamosActivity.this, VistaReclamoActivity.class);
                 i.putExtra("id", (long) recyclerView.getChildAdapterPosition(v));
                 startActivity(i);
             }
-        });*/
+        });
         
         manejador = (LocationManager) getSystemService(LOCATION_SERVICE);
         ultimaLocalizacion();
@@ -333,7 +331,7 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
             return true;
         }
         if(id == R.id.menu_buscar){
-            lanzarVistaReclamo(null);
+            //lanzarVistaReclamo(null);
             return true;
         }
         if(id == R.id.menu_mapa){

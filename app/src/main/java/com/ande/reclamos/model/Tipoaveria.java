@@ -2,7 +2,7 @@ package com.ande.reclamos.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Tipoaveria {
+public class Tipoaveria {
 
     @SerializedName("id")
     private int id;

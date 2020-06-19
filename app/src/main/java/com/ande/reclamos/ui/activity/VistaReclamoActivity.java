@@ -1,4 +1,4 @@
-package com.ande.reclamos;
+package com.ande.reclamos.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -16,7 +16,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ande.reclamos.EdicionReclamoActivity;
+import com.ande.reclamos.R;
+import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.activity.ReclamosActivity;
+import com.squareup.picasso.Picasso;
 
 /**
  * Actividad que visualiza un reclamo
@@ -64,12 +68,13 @@ public class VistaReclamoActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT,
-                        reclamo.getNombreCliente() + " - " +
-                                reclamo.getTipoReclamo().getTexto() + " - " +
-                                reclamo.getTipoAveria().getTexto() + " - " +
+                        reclamo.getNombre() + " - " +
+                                reclamo.getTiporeclamoid().getTipo() + " - " +
+                                reclamo.getTipoaveria().getTipoaveria() + " - " +
                                 reclamo.getTelefono() + " - " +
                                 reclamo.getDireccion() + " - " +
-                                reclamo.getReferencia()
+                                reclamo.getBarrio().getNombre() + " - " +
+                                reclamo.getCiudadid().getNombre()
                 );
                 startActivity(intent);
                 return true;
@@ -77,7 +82,7 @@ public class VistaReclamoActivity extends AppCompatActivity {
                 verMapa(null);
                 return true;
             case R.id.accion_editar:
-                lanzarEdicionReclamo(null, id);
+                //lanzarEdicionReclamo(null, id);
                 return true;
             case R.id.accion_borrar:
                 //Busca el id del reclamo según su posición en el cursor
@@ -108,7 +113,7 @@ public class VistaReclamoActivity extends AppCompatActivity {
         if (lat != 0 || lon != 0) {
             uri = Uri.parse("geo:" + lat + "," + lon);
         } else {
-            uri = Uri.parse("geo:0,0?q=" + reclamo.getDireccion());
+            uri = Uri.parse("geo:0,0?q=" + reclamo.getDireccion() + " " + reclamo.getBarrio().getNombre() + " " + reclamo.getCiudadid().getNombre());
         }
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
@@ -166,23 +171,21 @@ public class VistaReclamoActivity extends AppCompatActivity {
      * En este caso, la actividad volverá a consultar datos actualizados para mostrar
      */
     public void actualizarVistaReclamo(){
-        //reclamo = MainActivity.reclamos.elemento((int) id);
-        /**
-         * Ahora se accede al cursor que tiene la copia de la consulta SQL
-         */
-        /*reclamo = ReclamosActivity.adaptador.reclamoPosicion((int) id);                           //TODO. Esto debo agregar nuevamente
+        reclamo = ReclamosActivity.mAdapter.reclamoPosicion((int) id);
 
         TextView nombreCliente = (TextView) findViewById(R.id.nombreCliente);
-        nombreCliente.setText(reclamo.getNombreCliente());
+        nombreCliente.setText(reclamo.getNombre());
 
         ImageView logo_tipoReclamo = (ImageView) findViewById(R.id.logo_tipoReclamo);
-        logo_tipoReclamo.setImageResource(reclamo.getTipoReclamo().getRecurso());
+        Picasso.get().
+                load(reclamo.getTiporeclamoid().getImageTipoReclamoUrl()).
+                into(logo_tipoReclamo);
 
         TextView tipoReclamo = (TextView) findViewById(R.id.tipoReclamo);
-        tipoReclamo.setText(reclamo.getTipoReclamo().getTexto());
+        tipoReclamo.setText(reclamo.getTiporeclamoid().getTipo());
 
         TextView tipoAveria = (TextView) findViewById(R.id.tipoAveria);
-        tipoAveria.setText(reclamo.getTipoAveria().getTexto());
+        tipoAveria.setText(reclamo.getTipoaveria().getTipoaveria());
 
         if(reclamo.getTelefono() == 0) {
             findViewById(R.id.barra_telefono).setVisibility(View.GONE);
@@ -194,8 +197,11 @@ public class VistaReclamoActivity extends AppCompatActivity {
         TextView direccion = (TextView) findViewById(R.id.direccion);
         direccion.setText(reclamo.getDireccion());
 
-        TextView referencia = (TextView) findViewById(R.id.referencia);
-        referencia.setText(reclamo.getReferencia());*/
+        TextView barrio = (TextView) findViewById(R.id.barrio);
+        barrio.setText(reclamo.getBarrio().getNombre() + ", " + reclamo.getCiudadid().getNombre());
+
+        TextView nis = (TextView) findViewById(R.id.nis);
+        nis.setText(reclamo.getSuministroid().getNis());
     }
 
     /**

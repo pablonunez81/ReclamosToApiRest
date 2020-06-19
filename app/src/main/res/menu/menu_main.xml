@@ -16,10 +16,12 @@
         app:showAsAction="ifRoom|withText"/>
     <item
         android:id="@+id/menu_buscar"
-        android:title="@string/accion_buscar"
+        android:enabled="false"
         android:icon="@android:drawable/ic_menu_search"
         android:orderInCategory="115"
-        app:showAsAction="always|collapseActionView"/>
+        android:title="@string/accion_buscar"
+        android:visible="false"
+        app:showAsAction="always|collapseActionView" />
     <item
         android:id="@+id/menu_mapa"
         android:icon="@android:drawable/ic_menu_myplaces"

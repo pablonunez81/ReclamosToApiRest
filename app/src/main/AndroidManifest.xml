@@ -30,9 +30,9 @@
             android:name=".AcercaDeActivity"
             android:label="Acerca de..."
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".VistaReclamoActivity" />
+        <activity android:name=".ui.activity.VistaReclamoActivity" />
         <activity android:name=".EdicionReclamoActivity" />
-        <activity android:name=".MapaActivity" />
+        <activity android:name=".ui.activity.MapaActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

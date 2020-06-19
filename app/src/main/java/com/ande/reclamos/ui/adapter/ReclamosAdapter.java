@@ -21,7 +21,7 @@ public class ReclamosAdapter extends RecyclerView.Adapter<ReclamosAdapter.ViewHo
     private ArrayList<Reclamo> mDataSet;
     protected LayoutInflater inflador;      //Crea Layouts a partir del xml
     protected Context context;             //Necesario para el inflador
-    protected View.OnClickListener onClickListener;
+    private View.OnClickListener onItemClickListener;
 
     /**
      * Retorna la posición del reclamo
@@ -34,6 +34,14 @@ public class ReclamosAdapter extends RecyclerView.Adapter<ReclamosAdapter.ViewHo
         }else{
             return null;
         }
+    }
+
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public View.OnClickListener getOnItemClickListener() {
+        return onItemClickListener;
     }
 
     /**
@@ -66,18 +74,27 @@ public class ReclamosAdapter extends RecyclerView.Adapter<ReclamosAdapter.ViewHo
             mDataSet = new ArrayList<>();
         }
 
+    /**
+     * Método que es llamado cada vez que se reciben nuevos datos de la BD
+     * @param dataSet
+     */
     public void setDataSet(ArrayList<Reclamo> dataSet){
         this.mDataSet = dataSet;
         notifyDataSetChanged();
     }
 
-    // El layout manager invoca este método
-    // para renderizar cada elemento del RecyclerView
+    /**
+     * El layout manager invoca este método
+     * para renderizar cada elemento del RecyclerView
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
-    public ReclamosAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Creamos una nueva vista
         View v = inflador.inflate(R.layout.elemento_lista, null);
-        v.setOnClickListener(onClickListener);
+        v.setOnClickListener(onItemClickListener);
         return new ViewHolder(v);
     }
 
@@ -118,9 +135,6 @@ public class ReclamosAdapter extends RecyclerView.Adapter<ReclamosAdapter.ViewHo
             }
         }
     }
-
-    // Método que define la cantidad de elementos del RecyclerView
-    // Puede ser más complejo (por ejem, si implementamos filtros o búsquedas)
 
     /**
      * Método que define la cantidad de elementos del RecyclerView
