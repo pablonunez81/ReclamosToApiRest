@@ -184,11 +184,15 @@ public class Reclamo {
         this.personal = personal;
     }
 
+    /**
+     * Retorna las coordenadas georefenciales en Latitud (Y) - Longitud (X)
+     * @return
+     */
     public GeoPunto getPosicion() {
         if(this.getSuministroid() != null &&
                 !Double.isNaN(this.getSuministroid().getCoordx()) &&
                 !Double.isNaN(this.getSuministroid().getCoordy())) {
-            GeoPunto p = new GeoPunto(this.getSuministroid().getCoordx(), this.getSuministroid().getCoordy());
+            GeoPunto p = new GeoPunto(this.getSuministroid().getCoordy(), this.getSuministroid().getCoordx());
             return p;
         }else {
             return null;
