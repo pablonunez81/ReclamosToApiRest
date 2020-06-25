@@ -20,8 +20,9 @@ public class MyApiAdapter {
 
         baseUrl = "http://192.168.0.100";
         //baseUrl = "http://10.60.14.71";
+        //baseUrl = "http://45.79.180.15";
         apiRestUrl = baseUrl + ":8000/rest/";
-        imageTipoReclamoUrl = baseUrl + "/images/tipo_reclamo/";
+        imageTipoReclamoUrl = baseUrl + "/static/iconos/reclamos/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()

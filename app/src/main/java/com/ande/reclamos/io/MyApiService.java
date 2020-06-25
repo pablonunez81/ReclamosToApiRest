@@ -1,5 +1,6 @@
 package com.ande.reclamos.io;
 
+import com.ande.reclamos.model.Averia;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
 
@@ -28,4 +29,7 @@ public interface MyApiService {
 
     @GET("reclamos_movil/{numero_movil}/")
     Call<ArrayList<Reclamo>> reclamosMovil(@Path("numero_movil") String numero);
+
+    @GET("averia/")
+    Call<ArrayList<Averia>> averias();
 }

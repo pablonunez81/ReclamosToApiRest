@@ -20,6 +20,7 @@ import com.ande.reclamos.EdicionReclamoActivity;
 import com.ande.reclamos.R;
 import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.activity.ReclamosActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -47,6 +48,22 @@ public class VistaReclamoActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         id = extras.getLong("id", -1);
         actualizarVistaReclamo();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Creamos un nuevo reclamo en la BD y obtenemos su id.
+             * Lanzamos la actividad de edición rellenando con datos de ejemplos.
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                //long _id = reclamos.nuevo();
+                Intent i = new Intent(VistaReclamoActivity.this, ReparacionesActivity.class);
+                //i.putExtra("_id", _id);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
