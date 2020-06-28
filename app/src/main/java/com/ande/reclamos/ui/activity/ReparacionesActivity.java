@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -12,12 +13,15 @@ import android.widget.Toast;
 import com.ande.reclamos.R;
 import com.ande.reclamos.io.MyApiAdapter;
 import com.ande.reclamos.model.Averia;
+import com.ande.reclamos.model.ReclamosDetalle;
 import com.ande.reclamos.ui.adapter.ReparacionesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReparacionesActivity extends AppCompatActivity {
@@ -25,36 +29,31 @@ public class ReparacionesActivity extends AppCompatActivity {
     private Spinner spinnerAveria;
     private RecyclerView mRecyclerView;
     private ReparacionesAdapter mAdapter;
-    private static final String[] myDataSet = {
-            "PHP",
-            "Javascript",
-            "Go",
-            "Python",
-            "JAVA",
-            "Django",
-            "Symfony",
-            "Visual Basic",
-            "Otro"
-    };
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reparaciones);
+
+        Bundle extras = getIntent().getExtras();
+        id = extras.getLong("id", -1);
+
         mRecyclerView = findViewById(R.id.recyclerViewReparaciones);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ReparacionesAdapter(myDataSet);
+        mAdapter = new ReparacionesAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
         fetchAverias();
+        fetchAveriasXReclamo();
         spinnerAveria = (Spinner) findViewById(R.id.spinnerAveria);
 
     }
-
+    //---------------------------------------------LISTA DE AVERIAS---------------------------------
     private void fetchAverias() {
         Call<ArrayList<Averia>> call = MyApiAdapter.getApiService().averias();
         call.enqueue(new AveriasCallBack());
@@ -69,10 +68,10 @@ public class ReparacionesActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Error en el formato de respuesta de la lista de Averias", Toast.LENGTH_SHORT).show();
             }
         }
-
         @Override
         public void onFailure(Call<ArrayList<Averia>> call, Throwable t) {
-
+            Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("AveriasCallBack", "onFailure: "+t.getLocalizedMessage());
         }
     }
 
@@ -86,8 +85,32 @@ public class ReparacionesActivity extends AppCompatActivity {
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerAveria.setAdapter(spinnerArrayAdapter);
-
+    }
+    //---------------------------------------------AVERIAS POR RECLAMO------------------------------
+    private void fetchAveriasXReclamo() {
+        Call<ArrayList<ReclamosDetalle>> call = MyApiAdapter.getApiService().averiasXReclamo(String.valueOf(id));
+        call.enqueue(new AveriasXReclamoCallBack());
     }
 
+    private class AveriasXReclamoCallBack implements Callback<ArrayList<ReclamosDetalle>> {
+        @Override
+        public void onResponse(Call<ArrayList<ReclamosDetalle>> call, Response<ArrayList<ReclamosDetalle>> response) {
+            if(response.isSuccessful()) {
+                populateAveriasXReclamo(response);
+            }else {
+                Toast.makeText(getBaseContext(), "Error en el formato de respuesta de la lista de Averias por reclamo", Toast.LENGTH_SHORT).show();
+            }
+        }
 
+        private void populateAveriasXReclamo(Response<ArrayList<ReclamosDetalle>> response) {
+            ArrayList<ReclamosDetalle> reclamosDetalle = response.body();
+            mAdapter.setDataSet(reclamosDetalle);
+        }
+
+        @Override
+        public void onFailure(Call<ArrayList<ReclamosDetalle>> call, Throwable t) {
+            Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("AveriasXReclamoCallBack", "onFailure: "+t.getLocalizedMessage());
+        }
+    }
 }

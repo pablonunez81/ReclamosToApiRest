@@ -3,6 +3,7 @@ package com.ande.reclamos.io;
 import com.ande.reclamos.model.Averia;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
+import com.ande.reclamos.model.ReclamosDetalle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,4 +33,7 @@ public interface MyApiService {
 
     @GET("averia/")
     Call<ArrayList<Averia>> averias();
+
+    @GET("averias_x_reclamo/{reclamo_id}/")
+    Call<ArrayList<ReclamosDetalle>> averiasXReclamo(@Path("reclamo_id") String reclamoId);
 }

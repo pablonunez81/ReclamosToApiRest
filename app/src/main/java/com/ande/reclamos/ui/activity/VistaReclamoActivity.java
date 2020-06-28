@@ -51,16 +51,10 @@ public class VistaReclamoActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Creamos un nuevo reclamo en la BD y obtenemos su id.
-             * Lanzamos la actividad de edición rellenando con datos de ejemplos.
-             * @param view
-             */
             @Override
             public void onClick(View view) {
-                //long _id = reclamos.nuevo();
                 Intent i = new Intent(VistaReclamoActivity.this, ReparacionesActivity.class);
-                //i.putExtra("_id", _id);
+                i.putExtra("id", Long.valueOf(reclamo.getId()));
                 startActivity(i);
             }
         });
