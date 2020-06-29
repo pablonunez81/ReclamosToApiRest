@@ -28,8 +28,8 @@ public class ReparacionesActivity extends AppCompatActivity {
 
     private Spinner spinnerAveria;
     private RecyclerView mRecyclerView;
-    private ReparacionesAdapter mAdapter;
-    private long id;
+    private static ReparacionesAdapter mAdapter;
+    private static long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,18 +87,18 @@ public class ReparacionesActivity extends AppCompatActivity {
         spinnerAveria.setAdapter(spinnerArrayAdapter);
     }
     //---------------------------------------------AVERIAS POR RECLAMO------------------------------
-    private void fetchAveriasXReclamo() {
+    public static void fetchAveriasXReclamo() {
         Call<ArrayList<ReclamosDetalle>> call = MyApiAdapter.getApiService().averiasXReclamo(String.valueOf(id));
         call.enqueue(new AveriasXReclamoCallBack());
     }
 
-    private class AveriasXReclamoCallBack implements Callback<ArrayList<ReclamosDetalle>> {
+    private static class AveriasXReclamoCallBack implements Callback<ArrayList<ReclamosDetalle>> {
         @Override
         public void onResponse(Call<ArrayList<ReclamosDetalle>> call, Response<ArrayList<ReclamosDetalle>> response) {
             if(response.isSuccessful()) {
                 populateAveriasXReclamo(response);
             }else {
-                Toast.makeText(getBaseContext(), "Error en el formato de respuesta de la lista de Averias por reclamo", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "Error en el formato de respuesta de la lista de Averias por reclamo", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -109,7 +109,7 @@ public class ReparacionesActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Call<ArrayList<ReclamosDetalle>> call, Throwable t) {
-            Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             Log.d("AveriasXReclamoCallBack", "onFailure: "+t.getLocalizedMessage());
         }
     }

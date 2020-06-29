@@ -6,12 +6,12 @@ import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.model.ReclamosDetalle;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -36,4 +36,7 @@ public interface MyApiService {
 
     @GET("averias_x_reclamo/{reclamo_id}/")
     Call<ArrayList<ReclamosDetalle>> averiasXReclamo(@Path("reclamo_id") String reclamoId);
+
+    @HTTP(method = "DELETE", path = "reclamos_detalle/{pk}/", hasBody = true)
+    Call<Void> deleteReclamoDetalle(@Path("pk") String pk);
 }
