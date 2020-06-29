@@ -22,7 +22,6 @@ public class ReparacionesAdapter extends RecyclerView.Adapter<ReparacionesAdapte
 
     private ArrayList<ReclamosDetalle> mDataSet;
     protected LayoutInflater inflador;
-    //private View.OnClickListener onItemClickListener;
     private ViewHolder holder;
     private int position;
 
@@ -48,6 +47,7 @@ public class ReparacionesAdapter extends RecyclerView.Adapter<ReparacionesAdapte
             context = itemView.getContext();
 
             mtvAverias = (TextView) itemView.findViewById(R.id.tvAverias);
+            mtvObservacion = (TextView) itemView.findViewById(R.id.tvObservacion);
             //obtenemos la referencia de los botones a variables
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
@@ -79,13 +79,9 @@ public class ReparacionesAdapter extends RecyclerView.Adapter<ReparacionesAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReclamosDetalle reclamosdetalle = mDataSet.get(position);
         holder.mtvAverias.setText(reclamosdetalle.getAveria().getAveria());
-        //holder.mtvObservacion.setText("Esto es una prueba de cargar datos de observacion");
+        holder.mtvObservacion.setText(reclamosdetalle.getObservacion());
         holder.setOnClickListener();
     }
-
-    /*public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }*/
 
     @Override
     public int getItemCount() {
