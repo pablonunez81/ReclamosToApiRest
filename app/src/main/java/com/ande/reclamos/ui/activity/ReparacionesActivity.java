@@ -6,15 +6,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ande.reclamos.R;
 import com.ande.reclamos.io.MyApiAdapter;
+import com.ande.reclamos.io.response.ReclamosDetalleResponse;
 import com.ande.reclamos.model.Averia;
 import com.ande.reclamos.model.ReclamosDetalle;
 import com.ande.reclamos.ui.adapter.ReparacionesAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +31,11 @@ import retrofit2.Response;
 public class ReparacionesActivity extends AppCompatActivity {
 
     private Spinner spinnerAveria;
+    private EditText metObservacion;
     private RecyclerView mRecyclerView;
     private static ReparacionesAdapter mAdapter;
-    private static long id;
+    private static long reclamo_id;
+    private ArrayList<Averia> averias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,7 @@ public class ReparacionesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reparaciones);
 
         Bundle extras = getIntent().getExtras();
-        id = extras.getLong("id", -1);
+        reclamo_id = extras.getLong("id", -1);
 
         mRecyclerView = findViewById(R.id.recyclerViewReparaciones);
         mRecyclerView.setHasFixedSize(true);
@@ -51,8 +57,25 @@ public class ReparacionesActivity extends AppCompatActivity {
         fetchAverias();
         fetchAveriasXReclamo();
         spinnerAveria = (Spinner) findViewById(R.id.spinnerAveria);
+        metObservacion = findViewById(R.id.etObservacion);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnAddAveria);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("OnCreate", "Onclick. Spinner text: " + averias.get(spinnerAveria.getSelectedItemPosition()).getAveria());
+                Log.d("OnCreate", "Onclick. Observa: " + metObservacion.getText());
+                addReclamoDetalle();
+            }
+        });
 
     }
+
+    private void addReclamoDetalle() {
+        Call<ReclamosDetalleResponse> call = MyApiAdapter.getApiService().addReclamoDetalle(metObservacion.getText().toString(), averias.get(spinnerAveria.getSelectedItemPosition()).getId(), (int) reclamo_id);
+        call.enqueue(new AddReclamoDetalleCallBack());
+    }
+
     //---------------------------------------------LISTA DE AVERIAS---------------------------------
     private void fetchAverias() {
         Call<ArrayList<Averia>> call = MyApiAdapter.getApiService().averias();
@@ -76,7 +99,7 @@ public class ReparacionesActivity extends AppCompatActivity {
     }
 
     private void populateAverias(Response<ArrayList<Averia>> response) {
-        ArrayList<Averia> averias = response.body();
+        averias = response.body();
         List<String> list = new ArrayList<String>();
         for (Averia a: averias) {
             list.add(a.getAveria());
@@ -88,7 +111,7 @@ public class ReparacionesActivity extends AppCompatActivity {
     }
     //---------------------------------------------AVERIAS POR RECLAMO------------------------------
     public static void fetchAveriasXReclamo() {
-        Call<ArrayList<ReclamosDetalle>> call = MyApiAdapter.getApiService().averiasXReclamo(String.valueOf(id));
+        Call<ArrayList<ReclamosDetalle>> call = MyApiAdapter.getApiService().averiasXReclamo(String.valueOf(reclamo_id));
         call.enqueue(new AveriasXReclamoCallBack());
     }
 
@@ -111,6 +134,22 @@ public class ReparacionesActivity extends AppCompatActivity {
         public void onFailure(Call<ArrayList<ReclamosDetalle>> call, Throwable t) {
             //Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             Log.d("AveriasXReclamoCallBack", "onFailure: "+t.getLocalizedMessage());
+        }
+    }
+    //---------------------------------------Add ReclamoDetalle-------------------------------------
+    private class AddReclamoDetalleCallBack implements Callback<ReclamosDetalleResponse> {
+
+        @Override
+        public void onResponse(Call<ReclamosDetalleResponse> call, Response<ReclamosDetalleResponse> response) {
+            if(response.isSuccessful()) {
+                Log.d("AddReclamoDetalleCallBa", "OnResponse: IsSuccessful");
+                fetchAveriasXReclamo();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ReclamosDetalleResponse> call, Throwable t) {
+            Log.d("AddReclamoDetalleCallBa", "onFailure: "+t.getLocalizedMessage());
         }
     }
 }

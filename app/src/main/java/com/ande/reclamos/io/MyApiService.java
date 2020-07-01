@@ -1,5 +1,6 @@
 package com.ande.reclamos.io;
 
+import com.ande.reclamos.io.response.ReclamosDetalleResponse;
 import com.ande.reclamos.model.Averia;
 import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
@@ -12,6 +13,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -39,4 +41,12 @@ public interface MyApiService {
 
     @HTTP(method = "DELETE", path = "reclamos_detalle/{pk}/", hasBody = true)
     Call<Void> deleteReclamoDetalle(@Path("pk") String pk);
+
+    @FormUrlEncoded
+    @POST("reclamos_detalle/")
+    Call<ReclamosDetalleResponse> addReclamoDetalle(
+            @Field("observacion") String observacion,
+            @Field("averia") int averia_id,
+            @Field("reclamo") int reclamo_id
+    );
 }

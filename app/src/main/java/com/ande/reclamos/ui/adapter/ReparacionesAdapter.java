@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -74,10 +73,10 @@ public class ReparacionesAdapter extends RecyclerView.Adapter<ReparacionesAdapte
 
         private void deleteReclamoDetalle(String reclamosDetalleId) {
             Call<Void> call = MyApiAdapter.getApiService().deleteReclamoDetalle(reclamosDetalleId);
-            call.enqueue(new DeleteReclameDetalleCallBack());
+            call.enqueue(new DeleteReclamoDetalleCallBack());
         }
 
-        private class DeleteReclameDetalleCallBack implements retrofit2.Callback<Void> {
+        private class DeleteReclamoDetalleCallBack implements retrofit2.Callback<Void> {
 
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
