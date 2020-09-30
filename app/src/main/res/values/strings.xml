@@ -22,4 +22,7 @@
     <string name="averias_spinner">Seleccione Averia</string>
     <string name="averias_title">Reparaciones Realizadas</string>
     <string name="averias_boton">Agregar Reparación</string>
+
+    <string name="vista_reclamo_estado">Reclamo atendido/reparado</string>
+    <string name="vista_reclamo_agregar_reparaciones">Reparaciones</string>
 </resources>

@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ande.reclamos.AcercaDeActivity;
 import com.ande.reclamos.EdicionReclamoActivity;
 import com.ande.reclamos.R;
 import com.ande.reclamos.Reclamos;
