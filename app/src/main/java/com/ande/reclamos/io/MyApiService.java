@@ -6,7 +6,9 @@ import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.model.ReclamosDetalle;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -48,5 +50,16 @@ public interface MyApiService {
             @Field("observacion") String observacion,
             @Field("averia") int averia_id,
             @Field("reclamo") int reclamo_id
+    );
+
+    @FormUrlEncoded
+    @PUT("reclamos/{reclamo_id}/")
+    Call<Reclamo> reclamoAtendido(
+            @Path("reclamo_id") String reclamo_id,
+            @Field("nombre") String nombre,
+            @Field("direccion") String direccion,
+            @Field("telefono") String telefono,
+            @Field("estado") Boolean estado,
+            @Field("fecha_restitucion") String fecha_restitucion
     );
 }

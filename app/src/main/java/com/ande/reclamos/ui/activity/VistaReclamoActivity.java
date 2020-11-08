@@ -11,17 +11,30 @@ import android.view.MenuItem;
 import android.view.View;
 //import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ande.reclamos.EdicionReclamoActivity;
 import com.ande.reclamos.R;
+import com.ande.reclamos.io.MyApiAdapter;
+import com.ande.reclamos.model.Movil;
 import com.ande.reclamos.model.Reclamo;
 import com.ande.reclamos.ui.activity.ReclamosActivity;
+import com.ande.reclamos.util.Tiempo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Actividad que visualiza un reclamo
@@ -58,7 +71,20 @@ public class VistaReclamoActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        Switch estado = (Switch) findViewById(R.id.estado);
+        estado.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                String tiempo = Tiempo.obtenerFechaHoraActual("America/Asuncion");
+                Call<Reclamo> call = MyApiAdapter.getApiService().reclamoAtendido(String.valueOf(reclamo.getId()), String.valueOf(reclamo.getNombre()), String.valueOf(reclamo.getDireccion()), String.valueOf(reclamo.getTelefono()), true, tiempo );
+                call.enqueue(new ReclamoAtendidoCallback());
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,8 +237,8 @@ public class VistaReclamoActivity extends AppCompatActivity {
         TextView barrio = (TextView) findViewById(R.id.barrio);
         barrio.setText(reclamo.getBarrio().getNombre() + ", " + reclamo.getCiudadid().getNombre());
 
-        TextView nis = (TextView) findViewById(R.id.nis);
-        nis.setText(reclamo.getSuministroid().getNis());
+        /*TextView nis = (TextView) findViewById(R.id.nis);
+        nis.setText(reclamo.getSuministroid().getNis());*/
     }
 
     /**
@@ -229,6 +255,22 @@ public class VistaReclamoActivity extends AppCompatActivity {
         if (requestCode == RESULTADO_EDITAR) {
             actualizarVistaReclamo();
             findViewById(R.id.scrollViewVistaReclamo).invalidate();
+        }
+    }
+
+    private class ReclamoAtendidoCallback implements Callback<Reclamo> {
+        @Override
+        public void onResponse(Call<Reclamo> call, Response<Reclamo> response) {
+            if(response.isSuccessful()) {
+                Toast.makeText(getBaseContext(), "Response is Successfull", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getBaseContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<Reclamo> call, Throwable t) {
+            Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
