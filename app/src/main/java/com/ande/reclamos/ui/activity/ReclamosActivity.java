@@ -281,29 +281,6 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
     }
 
     /**
-     * Método que lanzará la actividad de visualización de reclamo, según un ID de reclamo
-     * @param view
-     */
-    public void lanzarVistaReclamo(View view){
-        final EditText entrada = new EditText(this);
-        entrada.setText("0");
-        new AlertDialog.Builder(this)
-                .setTitle("Selección de lugar")
-                .setMessage("indica su id:")
-                .setView(entrada)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        long id = Long.parseLong(entrada.getText().toString());
-                        Intent i = new Intent(ReclamosActivity.this,
-                                VistaReclamoActivity.class);
-                        i.putExtra("id", id);
-                        startActivity(i);
-                    }})
-                .setNegativeButton("Cancelar", null)
-                .show();
-    }
-
-    /**
      * Muestra el menu de opciones
      * @param menu
      * @return
@@ -327,10 +304,6 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
         }
         if(id == R.id.acercaDe){
             lanzarAcercaDe(null);
-            return true;
-        }
-        if(id == R.id.menu_buscar){
-            //lanzarVistaReclamo(null);
             return true;
         }
         if(id == R.id.menu_mapa){
