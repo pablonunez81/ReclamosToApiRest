@@ -125,7 +125,7 @@ public class ReclamosAdapter extends RecyclerView.Adapter<ReclamosAdapter.ViewHo
                 into(holder.tipoReclamo);
 
         if(Reclamos.posicionActual != null && reclamo.getPosicion() != null &&
-            reclamo.getSuministroid().getCoordx() != 0 && reclamo.getSuministroid().getCoordy() != 0){
+            reclamo.getCoordx() != 0 && reclamo.getCoordy() != 0){
             int d;
             d = (int) Reclamos.posicionActual.distancia(reclamo.getPosicion());
             if(d<2000) {

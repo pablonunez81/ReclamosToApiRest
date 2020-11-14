@@ -20,6 +20,15 @@ public class Reclamo {
     @SerializedName("telefono")
     private int telefono;
 
+    @SerializedName("nis")
+    private String nis;
+
+    @SerializedName("coordx")
+    private double coordx;
+
+    @SerializedName("coordy")
+    private double coordy;
+
     @SerializedName("fecha_recepcion")
     private Timestamp fecha_recepcion;
 
@@ -184,15 +193,38 @@ public class Reclamo {
         this.personal = personal;
     }
 
+    public String getNis() {
+        return nis;
+    }
+
+    public void setNis(String nis) {
+        this.nis = nis;
+    }
+
+    public double getCoordx() {
+        return coordx;
+    }
+
+    public void setCoordx(double coordx) {
+        this.coordx = coordx;
+    }
+
+    public double getCoordy() {
+        return coordy;
+    }
+
+    public void setCoordy(double coordy) {
+        this.coordy = coordy;
+    }
+
     /**
      * Retorna las coordenadas georefenciales en Latitud (Y) - Longitud (X)
      * @return
      */
     public GeoPunto getPosicion() {
-        if(this.getSuministroid() != null &&
-                !Double.isNaN(this.getSuministroid().getCoordx()) &&
-                !Double.isNaN(this.getSuministroid().getCoordy())) {
-            GeoPunto p = new GeoPunto(this.getSuministroid().getCoordy(), this.getSuministroid().getCoordx());
+        if(!Double.isNaN(this.getCoordx()) &&
+           !Double.isNaN(this.getCoordy())) {
+            GeoPunto p = new GeoPunto(this.getCoordy(), this.getCoordx());
             return p;
         }else {
             return null;
