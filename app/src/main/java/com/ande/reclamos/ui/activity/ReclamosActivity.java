@@ -150,7 +150,12 @@ public class ReclamosActivity extends AppCompatActivity implements LocationListe
             Reclamos.posicionActual.setLatitud(localiz.getLatitude());
             Reclamos.posicionActual.setLongitud(localiz.getLongitude());
 
-            Call<Movil> call = MyApiAdapter.getApiService().actualizarUbicacion(String.valueOf(movilId), String.valueOf(movilNumero), String.valueOf(localiz.getLatitude()), String.valueOf(localiz.getLongitude()));
+            Call<Movil> call = MyApiAdapter.getApiService().actualizarUbicacion(
+                    String.valueOf(movilId),
+                    String.valueOf(movilNumero),
+                    String.valueOf(localiz.getLatitude()),
+                    String.valueOf(localiz.getLongitude())
+            );
             call.enqueue(this);
         }
     }
